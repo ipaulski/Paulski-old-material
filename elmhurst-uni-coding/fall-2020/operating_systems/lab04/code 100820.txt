@@ -1,0 +1,50 @@
+;CS310 ASM04
+;Izabella Paulski
+
+INCLUDE Irvine32.inc
+ExitProcess PROTO, dwExitCode: DWORD
+.data
+maxrows EQU 25
+maxcols EQU 25
+Grid DWORD maxrows*maxcols DUP(0)		;keeps a record of where you have numbers
+					;given row& col, with array that’s product of row*col entries, how to 					
+find which one it is? Inc 1 if there’s a 9 change it to a 1 - direct and 		
+			indirect addressing, 
+	 
+Counter DWORD 25
+Delayvalue DWORD 25
+row BYTE ?
+col BYTE ? 
+.code
+Main PROC
+	mov ecx, counter		;move number of random iterations to EAX
+L1:
+	mov eax, maxrows		;generate random row number and save as variable row
+	call RandomRange 		; within the range of 0 to (maxrows-1)
+	mov row, al
+
+	mov eax, maxcols		;generate random col number and save as variable col
+	call RandomRange		; within the range of 0 to (maxcols-1)
+	mov col, al
+
+	mov dh, row				;position cursor row, col
+	mov dl, col
+	call Gotoxy
+
+	mov al, "1"				;display a one at row, col
+	call WriteChar
+	mov eax, 500
+	call Delay
+	loop L1
+	call WaitMsg
+INVOKE ExitProcess, 0
+Main ENDP
+END MAIN
+
+**
+Call DumpRegs
+Call WaitMsg
+
+
+
+
