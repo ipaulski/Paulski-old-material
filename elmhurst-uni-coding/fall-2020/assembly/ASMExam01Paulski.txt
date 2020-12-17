@@ -1,0 +1,59 @@
+;Izabella Paulski
+;CS310 Exam #03 - Assembly Exam 01
+INCLUDE Irvine32.inc
+.DATA
+BYTE01 BYTE	  "ABC"
+
+val1   WORD   255
+val2   DWORD  1212
+val3   SDWORD -4300     
+
+BYTE02 BYTE	  "123"
+
+n 	   DWORD   ?		;stores the total num of bytes b/w BYTE01 and BYTE02  
+
+.CODE
+main PROC
+
+	call numBytes
+
+	call fib
+
+	call DumpRegs
+
+	exit
+main ENDP
+
+numBytes PROC
+	mov eax,0
+	mov ebx,SIZEOF BYTE01
+	add n,ebx
+	mov ebx,SIZEOF val1
+	add n,ebx
+	mov ebx,SIZEOF val2
+	add n,ebx
+	mov ebx,SIZEOF val3
+	add n,ebx
+	mov ebx,SIZEOF BYTE02
+	add n,ebx
+	mov eax,n
+	ret
+numBytes ENDP
+
+fib PROC			;fibonacci sequence loop of n
+	mov ecx,0
+	mov ecx,n
+	mov eax,0
+	mov ebx,1
+	mov edx,1
+L1:
+	mov ebp,ebx		;moves num along regs to keep value
+	mov eax,ebp		;eax is current n
+	mov ebx,edx		;next elem
+	add edx,eax		;add previous value to edx
+	call WriteInt
+	loop L1
+	ret
+fib ENDP
+
+END main

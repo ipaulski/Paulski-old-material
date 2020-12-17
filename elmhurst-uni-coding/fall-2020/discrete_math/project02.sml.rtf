@@ -1,0 +1,70 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2576
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 (*Izabella Paulski CS302 Project 2*)\
+\
+8.A. \
+\
+ fun insertSorted(x,comp,[]) = [x]\
+    |insertSorted(x,comp,a::rest) = if comp(x,a) then x::a::rest\
+                                      else a::insertSorted(x,comp,rest);\
+val insertSorted = fn : 'a * ('a * 'a -> bool) * 'a list -> 'a list\
+\
+8.B.\
+\
+ fun makeInitialList(g as G(_),s) =\
+       let\
+           fun internal(G([]),s) = []\
+              |internal(G(V(x,_)::rest),s) =\
+                   if(x<>s) then (x,valOf(Int.maxInt),~2)::internal(G(rest),s) else internal(G(rest),s);\
+       in (s,0,~1)::internal(g,s)\
+ end;\
+\
+8.C. [unfinished]\
+\
+fun dijkstraStep(vdv,g,vv) = \
+    let val adj = getAdjacent(g,v);\
+        fun compare((a,x,_),(b,y,_)) = \
+            x<y;\
+    fun relax((u,du,p),rest) = ??\
+in \
+      foldr(relax)([])(vv)\
+end;\
+\
+8.D. [unfinished]\
+\
+fun sssp(g,s) = \
+    let val q = makeInitialList(g,s);\
+        fun dijkstraBody([]) = []\
+            | dijkstraBody((v,d,p)::rest) = \
+                ??\
+    in\
+        dijkstraBody(q)\
+    end;\
+\
+ETC\
+- datatype vertex = V of int * (int * int) list;\
+datatype vertex = V of int * (int * int) list\
+- datatype graph = G of vertex list;\
+datatype graph = G of vertex list\
+- Control.Print.printLength := 500;\
+val it = () : unit\
+- Control.Print.linewidth := 80;\
+val it = () : unit\
+- Control.Print.printDepth := 10;\
+val it = () : unit\
+- val g = G([V(1, [(2,5),(3,2),(5,9)]), V(2, [(6,10)]),\
+=            V(3, [(4,1),(5,3)]), V(4, [(7,5),(8,4)]),\
+=            V(5, [(6,4),(9,7)]), V(6, [(9,2)]),\
+=            V(7, [(8,3)]), V(8,[]), V(9,[(8,8)])]);\
+val g =\
+  G\
+    [V (1,[(2,5),(3,2),(5,9)]),V (2,[(6,10)]),V (3,[(4,1),(5,3)]),\
+     V (4,[(7,5),(8,4)]),V (5,[(6,4),(9,7)]),V (6,[(9,2)]),V (7,[(8,3)]),\
+     V (8,[]),V (9,[(8,8)])] : graph\
+-  fun foldr(f, s, []) = s\
+=    | foldr(f, s, x::rest) = f(x, foldr(f, s, rest));}

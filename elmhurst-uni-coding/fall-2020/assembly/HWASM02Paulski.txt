@@ -1,0 +1,187 @@
+;Izabella Paulski problem 1 HWASM02
+INCLUDE Irvine32.inc
+.data
+val1 SDWORD ?
+val2 SDWORD ?
+str0  BYTE "Using A = (A + B) - (C + D)",0
+str1 BYTE "Enter an integer for A: ",0
+str2 BYTE "Enter an integer for B: ",0
+str3 BYTE "Enter an integer for C: ",0
+str4 BYTE "Enter an integer for D: ",0
+str5 BYTE "A = ",0
+
+sum  SDWORD 0
+row  BYTE ?
+col  BYTE ?
+
+.code
+main PROC
+
+; Input multiple integers
+	call ClrScr
+	mov  sum,0		
+	mov  row,8
+	mov  col,20
+	call Locate
+
+; input the four integers
+	call Input0
+	add  row,2
+	call Input
+	add  val1,eax
+	add  row,2
+	call Input2
+	add  val1,eax
+	add  row,2
+	call Input3
+	add  val2,eax
+	add  row,2
+	call Input4
+	add  val2,eax
+
+; use expression A = (A+B) - (C+D)
+	mov  ebx,val2
+	mov  eax,val1
+	sub  eax,ebx
+	add  sum,eax
+
+	call DisplaySum
+	
+	exit
+main ENDP
+
+Input0 PROC
+	call Locate
+	mov  edx,OFFSET str0
+	call WriteString
+	ret
+Input0 ENDP
+
+; input an integer
+Input PROC
+	call Locate
+	mov  edx,OFFSET str1
+	call WriteString
+	call ReadInt
+	ret
+Input ENDP
+
+Input2 PROC
+	call Locate
+	mov  edx,OFFSET str2
+	call WriteString
+	call ReadInt
+	ret
+Input2 ENDP
+
+Input3 PROC
+	call Locate
+	mov  edx,OFFSET str3
+	call WriteString
+	call ReadInt
+	ret
+Input3 ENDP
+
+Input4 PROC
+	call Locate
+	mov  edx,OFFSET str4
+	call WriteString
+	call ReadInt
+	ret
+Input4 ENDP
+
+; locate the cursor
+Locate PROC
+	mov  dh,row
+	mov  dl,col
+	call Gotoxy
+	ret
+Locate ENDP
+
+DisplaySum PROC
+	add  row,2
+	call Locate
+	mov  edx,OFFSET str5
+	call WriteString
+	mov  eax,sum
+	call WriteInt
+	ret
+DisplaySum ENDP
+
+END main
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+;Izabella Paulski problem 2 HWASM02
+INCLUDE Irvine32.inc
+.data
+
+	SUN   = 0
+	MON   = 1
+	TUES  = 2
+	WED   = 3
+	THURS = 4
+	FRI   = 5
+	SAT   = 6
+	arrayWeek BYTE SUN,MON,TUES,WED,THURS,FRI,SAT
+
+.code
+main PROC
+	INVOKE ExitProcess,0
+main ENDP
+END main
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+;Izabella Paulski problem 3 HWASM02
+INCLUDE Irvine32.inc
+.data
+
+	valB   BYTE    99h
+	valSB  SBYTE  -99h
+	valW   WORD    9999h
+	valSW  SWORD  -9999h
+	valDW  DWORD   99999999h
+	valSDW SDWORD -99999999h
+	valFW  FWORD   999999999999h
+	valQW  QWORD   9999999999999999h
+	valTB  TBYTE   99999999999999999999h
+    valR4  REAL4   99999999.9
+	valR8  REAL8   9999999999999999.9
+	valR10 REAL10  99999999999999999999.9
+
+.code
+main PROC
+	INVOKE ExitProcess,0
+main ENDP
+END main
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+;Izabella Paulski problem 4 HWASM02
+
+INCLUDE Irvine32.inc
+
+.data
+
+buffer BYTE 5 DUP(0)
+str1 BYTE "Enter the first four letters of your first name: ",0
+
+.code
+main PROC
+
+; input the first four letters of the first name
+	call Input
+	call DumpRegs
+	exit
+main ENDP
+
+; input string
+Input PROC
+	mov  edx,OFFSET str1
+	call WriteString
+	mov  edx,OFFSET buffer
+	mov  ecx,SIZEOF buffer
+	call ReadString
+	mov  eax,DWORD PTR buffer
+	ret
+Input ENDP
+
+END main

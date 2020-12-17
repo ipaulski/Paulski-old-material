@@ -1,0 +1,109 @@
+;Izabella Paulski
+;CS310 ASM05 
+
+INCLUDE Irvine32.inc
+ExitProcess PROTO, dwExitCode: DWORD
+
+.data
+total DWORD ?
+average DWORD ?
+counter DWORD 5  
+loop_key DWORD 0 
+grades DWORD 0, 0, 0, 0, 0
+str1 BYTE "Enter an integer: ",0
+str2 BYTE "The average is:   ",0
+str3 BYTE "The letter grade is: ",0
+str4 BYTE "The 5 original scores are: ",0
+comma BYTE ", ",0
+str5 BYTE "Do you wish to enter another set of grades? [enter -1 if no]: ",0
+carriageReturn BYTE ' ',13,10,0
+
+.code
+main PROC
+mov edx, -1
+top: cmp edx, loop_key                      ;Begin while loop, condition is that loop_key does not equal -1
+ja next 
+
+next:
+mov ecx, counter
+mov esi,OFFSET grades
+
+loop1:                                      ;iterate 5 times to fill in grades
+mov edx, OFFSET str1
+call writeString                            ;Display str1 on the next row
+call readint                                
+mov [esi],eax                               ;Add input_val to next open space in grades    
+add total,eax                               ;Add input_val to total
+add esi,TYPE grades
+loop loop1
+
+mov edx, OFFSET str4
+call writeString                            ;"5 original scores are"
+
+mov ecx,counter
+mov esi,OFFSET grades
+loop2:                                      ;Use a loop to output the values of grades
+mov eax,[esi]
+call writeDec
+mov edx,OFFSET comma
+call WriteString
+add esi,TYPE grades
+loop loop2
+
+mov edx,OFFSET carriageReturn			     ;new line
+call WriteString
+
+;calculate average
+mov eax,total
+mov ebx,counter
+;xor edx,edx
+cdq
+div ebx                                     ;Divide average by counter
+mov average,eax                             ;Move average to EAX
+mov edx, OFFSET str2
+call writeString                            ;Display str2 on the next row
+call writeInt                               ;Output the value in average
+mov ecx,average                             ;Move average to ECX
+
+mov edx,OFFSET carriageReturn			     ;new line
+call WriteString
+
+mov edx,OFFSET str3							;print letter grades
+call WriteString
+
+call LetterGrade 
+mov eax,ebx
+call writeChar
+
+mov edx,OFFSET carriageReturn			     ;new line
+call WriteString
+
+mov edx,OFFSET str5						;exit prog?
+call WriteString
+call readInt
+mov loop_key,eax
+
+.IF loop_key == -1						;if user enters -1, exit prog
+	exit
+.ELSE
+	jmp top
+.ENDIF
+
+Main ENDP
+
+LetterGrade PROC				;print out char letter grade
+.IF ecx >= 90
+	mov ebx,"A"
+.ELSEIF ecx >= 80
+	mov ebx,"B"
+.ELSEIF ecx >= 70
+	mov ebx,"C"
+.ELSEIF ecx >= 60
+	mov ebx,"D"
+.ELSE
+	mov ebx,"F"
+.ENDIF
+ret
+LetterGrade ENDP
+
+END MAIN

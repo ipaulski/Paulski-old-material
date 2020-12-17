@@ -1,0 +1,133 @@
+;CS310 ASM04 PROBLEM 1
+;Izabella Paulski
+
+INCLUDE Irvine32.inc
+ExitProcess PROTO, dwExitCode: DWORD
+.data
+maxrows    BYTE  ?
+maxcols    BYTE  ?
+counter    DWORD 100
+delayValue DWORD 100
+row        BYTE  ?
+col        BYTE  ? 
+.code
+Main PROC
+	mov  ecx, counter				;move number of iterations to ECX
+	call GetMaxXY					;get maxcols and maxrows of current window size
+	mov  maxrows,al
+	mov  maxcols,dl
+L1:
+	
+	mov  eax,DWORD PTR maxrows		;generate random row number and save as variable row
+	call RandomRange 				; within the range of 0 to (maxrows-1)
+	mov  row, al
+
+	mov  eax,DWORD PTR maxcols		;generate random col number and save as variable col
+	call RandomRange				; within the range of 0 to (maxcols-1)
+	mov  col, al
+
+	mov  dh, row					;position cursor row, col
+	mov  dl, col
+	call Gotoxy
+
+	mov  al, "1"					;display a one at row, col
+	call WriteChar
+	mov  eax, delayValue				
+	call Delay
+	loop L1
+	call WaitMsg
+INVOKE ExitProcess, 0
+Main ENDP
+END MAIN
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+;CS310 ASM04 PROBLEM 2
+;Izabella Paulski
+
+INCLUDE Irvine32.inc
+ExitProcess PROTO, dwExitCode: DWORD
+.data
+count      DWORD 16h
+count2	   DWORD 16h
+foreground DWORD 15h
+background DWORD 15h
+.code
+Main PROC
+	mov  ecx, count 				
+L1:
+	mov ebx,0
+	mov eax,0
+	mov ebx,16h
+	mov eax,background
+	mul ebx						;background color is num*16
+	mov ecx, count2
+	L2: 
+		add  eax,foreground			;text color is added to background color
+		call SetTextColor
+		mov  al, "1"				;display a one at row, col
+		call WriteChar
+		dec  foreground
+	loop L2
+	dec  background
+JECXZ L1
+call WaitMsg
+INVOKE ExitProcess, 0
+Main ENDP
+END MAIN
+////////////////////////////////////////////////////////////////////////////////////////////////////
+;CS 310 ASM HW 5.9.7
+;Izabella Paulski
+
+INCLUDE Irvine32.inc
+ExitProcess PROTO, dwExitCode: DWORD
+.data
+maxrows    EQU 25
+maxcols    EQU 25
+grid       DWORD maxrows*maxcols DUP(0)	 
+counter    DWORD 25
+delayValue DWORD 25
+num		   BYTE  ?
+row        BYTE  ?
+col		   BYTE  ? 
+.code
+Main PROC
+	mov ecx, counter		;move number of random iterations to ECX
+L1:
+	mov eax, maxrows		;generate random row number and save as variable row
+	call RandomRange 		; within the range of 0 to (maxrows-1)
+	mov row, al
+
+	mov eax, maxcols		;generate random col number and save as variable col
+	call RandomRange		; within the range of 0 to (maxcols-1)
+	mov col, al
+
+	mov dh, row				;position cursor row, col
+	mov dl, col
+	call Gotoxy
+
+	mov ecx,0
+
+	mov eax,16h
+	call randomRange
+	call setTextColor		;display random text color
+	call traverse			;display 1-9 
+	call WriteDec
+
+	mov eax, delayValue
+	call Delay
+	loop L1
+	call WaitMsg
+INVOKE ExitProcess, 0
+Main ENDP
+
+traverse PROC
+	.IF [grid]==9
+		mov eax,1
+	.ELSE
+		mov eax,[grid]
+		add eax,1
+	.ENDIF
+	ret
+traverse ENDP
+
+END MAIN
