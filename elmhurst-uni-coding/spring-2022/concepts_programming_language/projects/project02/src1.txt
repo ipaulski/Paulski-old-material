@@ -1,0 +1,16 @@
+x := 3;
+y := 4;
+read(x);
+z1 := x + y;
+write( x, y, z1,x*y/2-23 );
+
+Libby:=07;
+_liberty:=7;
+L_3:=007;
+L2:=77;
+3Dog:=dog
+
+Max:=100;
+a_1:=max+3;
+_a1:=a_1;
+read(_a1);
