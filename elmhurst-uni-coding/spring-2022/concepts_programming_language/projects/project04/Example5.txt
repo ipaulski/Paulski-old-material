@@ -1,0 +1,5 @@
+a+b;
+write(a) ;
+a := b;
+b-3*2/1;
+read(b);
