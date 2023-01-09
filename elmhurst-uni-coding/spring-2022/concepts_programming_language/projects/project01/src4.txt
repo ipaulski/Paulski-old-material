@@ -1,0 +1,8 @@
+libby := 07;
+_liberty := 7;
+L_3 := 007;
+L2 := 77;
+//trying to fail cases
+3Dog := 3;
+Dog := dog;
+Woof := "woof";

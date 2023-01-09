@@ -1,0 +1,6 @@
+dog := 7;
+read(dog);
+cat := 9;
+read(cat);
+sandwich := 13;
+write(sandwich+2, cat/3, dog*1);
